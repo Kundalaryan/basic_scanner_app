@@ -1,12 +1,14 @@
 {
   "target" : "portfolio.expertsec.in",
-  "scanStarted" : "2025-12-16T10:34:01.230036100Z",
-  "scanFinished" : "2025-12-16T10:47:46.623912700Z",
-  "durationSeconds" : 825,
+  "scanStarted" : "2025-12-23T04:35:48.703658Z",
+  "scanFinished" : "2025-12-23T04:49:02.060745400Z",
+  "durationSeconds" : 793,
   "summary" : {
     "HIGH" : 2,
-    "MEDIUM" : 1,
-    "LOW" : 3
+    "MEDIUM" : 4,
+    "LOW" : 3,
+    "INFO" : 1,
+    "CRITICAL" : 1
   },
   "findings" : [ {
     "type" : "Fingerprint",
@@ -15,17 +17,23 @@
     "confidence" : "Medium",
     "evidence" : "Server detected: [LiteSpeed]"
   }, {
-    "type" : "Directory Exposure",
-    "target" : "portfolio.expertsec.in",
-    "severity" : "High",
-    "confidence" : "High",
-    "evidence" : "Affected items: 4664, Examples: [.bash_history → HTTP 200, .bashrc → HTTP 200, .cache → HTTP 200, .config → HTTP 200, .cvs → HTTP 200]"
+    "type" : "Open Port",
+    "target" : "portfolio.expertsec.in:443",
+    "severity" : "Medium",
+    "confidence" : "Medium",
+    "evidence" : "Service detected: HTTPS"
+  }, {
+    "type" : "Open Port",
+    "target" : "portfolio.expertsec.in:80",
+    "severity" : "Medium",
+    "confidence" : "Medium",
+    "evidence" : "Service detected: HTTP"
   }, {
     "type" : "Directory Exposure",
     "target" : "portfolio.expertsec.in",
     "severity" : "High",
     "confidence" : "Medium",
-    "evidence" : "Affected items: 11, Examples: [.git → HTTP 403, .git/HEAD → HTTP 403, .git/config → HTTP 403, .git/index → HTTP 403, .git/logs/ → HTTP 403]"
+    "evidence" : "Affected items: 25, Examples: [~adm → HTTP 301, ~admin → HTTP 301, ~administrator → HTTP 301, ~amanda → HTTP 301, ~apache → HTTP 301]"
   }, {
     "type" : "Header Issue",
     "target" : "portfolio.expertsec.in",
@@ -40,9 +48,60 @@
     "evidence" : "Affected items: 2, Examples: [TLS Cipher: TLS_AES_256_GCM_SHA384, Certificate issuer: CN=R12, O=Let's Encrypt, C=US]"
   }, {
     "type" : "Open Port",
+    "target" : "portfolio.expertsec.in:3306",
+    "severity" : "Medium",
+    "confidence" : "Medium",
+    "evidence" : "Service detected: V\u0000\u0000\u0000 11.8.3-MariaDB-log\u0000�\u001D�\u0004A86GAOKj\u0000���\u0002\u0000��\u0015\u0000\u0000\u0000\u0000\u0000\u0000=\u0000\u0000\u0000R?\"+P2GQB3z/\u0000mysql_native_password"
+  }, {
+    "type" : "OWASP A03",
+    "target" : "portfolio.expertsec.in/.env",
+    "severity" : "Critical",
+    "confidence" : "High",
+    "evidence" : "Affected items: 3, Examples: [Sensitive file accessible, Sensitive file accessible, Sensitive file accessible]"
+  }, {
+    "type" : "OWASP A01",
+    "target" : "portfolio.expertsec.in/admin",
+    "severity" : "High",
+    "confidence" : "High",
+    "evidence" : "Affected items: 3, Examples: [Sensitive endpoint accessible: HTTP 200, Sensitive endpoint accessible: HTTP 200, Sensitive endpoint accessible: HTTP 200]"
+  }, {
+    "type" : "Recon Information",
+    "target" : "portfolio.expertsec.in",
+    "severity" : "Info",
+    "confidence" : "High",
+    "evidence" : "Affected items: 2, Examples: [favicon.ico → HTTP 200, robots.txt → HTTP 200]"
+  }, {
+    "type" : "Open Port",
     "target" : "portfolio.expertsec.in:21",
     "severity" : "Medium",
     "confidence" : "Medium",
-    "evidence" : "Affected items: 4, Examples: [Service detected: 220 FTP Server ready., Service detected: HTTP, Service detected: HTTPS, Service detected: V\u0000\u0000\u0000 11.8.3-MariaDB-log\u0000\u001B�0\u0002$YsW<aWp\u0000���\u0002\u0000��\u0015\u0000\u0000\u0000\u0000\u0000\u0000=\u0000\u0000\u0000Mm`wU&\\{yl1O\u0000mysql_native_password]"
-  } ]
+    "evidence" : "Service detected: 220 FTP Server ready."
+  } ],
+  "suggestions" : {
+    "Recon Information" : [ "Manually review this finding", "Assess the business impact before remediation" ],
+    "Fingerprint" : [ "Manually review this finding", "Assess the business impact before remediation" ],
+    "Open Port" : [ "Confirm the service is required", "Restrict access via firewall rules", "Ensure the service is properly hardened" ],
+    "Header Issue" : [ "Add missing security headers", "Review Content Security Policy", "Harden HTTP response headers" ],
+    "OWASP A03" : [ "Manually review this finding", "Assess the business impact before remediation" ],
+    "TLS" : [ "Enforce HTTPS for all endpoints", "Enable HTTP to HTTPS redirection", "Use strong TLS configurations and ciphers" ],
+    "OWASP A01" : [ "Manually review this finding", "Assess the business impact before remediation" ],
+    "Directory Exposure" : [ "Verify authentication on exposed directories", "Restrict access using IP allowlists or VPN", "Disable directory listing on the server" ]
+  },
+  "owaspScorecard" : {
+    "A01" : {
+      "status" : "FAIL",
+      "severity" : "High",
+      "count" : 1
+    },
+    "A02" : {
+      "status" : "PASS",
+      "severity" : null,
+      "count" : 0
+    },
+    "A03" : {
+      "status" : "FAIL",
+      "severity" : "Critical",
+      "count" : 1
+    }
+  }
 }

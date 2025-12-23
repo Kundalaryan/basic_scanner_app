@@ -7,6 +7,7 @@ import com.security.scanner.model.Finding;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class DirectoryScannerModule implements ScannerModule {
 
@@ -46,7 +47,23 @@ public class DirectoryScannerModule implements ScannerModule {
             } else {
                 confidence = "Medium"; // 301, 302, 401, 403
             }
+            Set<String> reconFiles = Set.of(
+                    "robots.txt",
+                    "favicon.ico",
+                    "humans.txt",
+                    "security.txt"
+            );
 
+            if (reconFiles.contains(result.path)) {
+                findings.add(new Finding(
+                        "Recon Information",
+                        context.target,
+                        "Info",
+                        "High",
+                        result.path + " → HTTP " + result.statusCode
+                ));
+                continue;
+            }
             findings.add(new Finding(
                     "Directory Exposure",
                     context.target,
@@ -55,6 +72,7 @@ public class DirectoryScannerModule implements ScannerModule {
                     result.path + " → HTTP " + result.statusCode
             ));
         }
+
 
         return findings;
     }

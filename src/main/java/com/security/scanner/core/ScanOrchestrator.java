@@ -2,6 +2,7 @@ package com.security.scanner.core;
 
 import com.security.scanner.model.Finding;
 import com.security.scanner.network.PortScannerModule;
+import com.security.scanner.owasp.OwaspOrchestrator;
 import com.security.scanner.web.*;
 
 import java.util.ArrayList;
@@ -28,11 +29,17 @@ public class ScanOrchestrator {
 
         List<Finding> allFindings = new ArrayList<>();
 
+        // 1️⃣ Run core scanner plugins
         for (ScannerModule module : modules) {
             System.out.println("▶ Running: " + module.name());
             allFindings.addAll(module.scan(context));
         }
 
+        // 2️⃣ Run SAFE OWASP checks (POST-PROCESSING)
+        OwaspOrchestrator owasp = new OwaspOrchestrator();
+        allFindings.addAll(owasp.run(context));
+
+        // 3️⃣ Return combined findings
         return allFindings;
     }
 }

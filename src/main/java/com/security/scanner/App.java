@@ -4,10 +4,7 @@ import com.security.scanner.core.ScanConfig;
 import com.security.scanner.core.ScanOrchestrator;
 import com.security.scanner.model.Finding;
 import com.security.scanner.model.ScanReport;
-import com.security.scanner.report.FindingAggregator;
-import com.security.scanner.report.ReportGenerator;
-import com.security.scanner.report.ReportWriter;
-import com.security.scanner.report.SuggestionEngine;
+import com.security.scanner.report.*;
 
 import java.time.Instant;
 import java.util.List;
@@ -36,6 +33,7 @@ public class App {
             SuggestionEngine suggestionEngine = new SuggestionEngine();
             var suggestions = suggestionEngine.generate(findings);
 
+
             Instant end = Instant.now();
 
             ReportGenerator generator = new ReportGenerator();
@@ -43,6 +41,12 @@ public class App {
                     generator.generate(config.target, start, end, findings);
             report.suggestions = suggestions;
 
+            OwaspScorecardGenerator scorecardGenerator =
+                    new OwaspScorecardGenerator();
+
+            var scorecard = scorecardGenerator.generate(findings);
+
+            report.owaspScorecard = scorecard;
 
             ReportWriter writer = new ReportWriter();
             writer.writeJson(report, "scan-report.json");

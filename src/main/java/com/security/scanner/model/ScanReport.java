@@ -14,5 +14,6 @@ public class ScanReport {
     public Map<String, Long> summary;
     public List<Finding> findings;
     public Map<String, List<String>> suggestions;
+    public Map<String, OwaspScore> owaspScorecard;
 
 }

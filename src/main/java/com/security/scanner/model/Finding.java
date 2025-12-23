@@ -9,6 +9,11 @@ public class Finding {
     public String evidence;
 
     public String aggregationKey() {
+
+        if ("Open Port".equals(type)) {
+            return type + "|" + target; // keep ports separate
+        }
+
         return type + "|" + severity + "|" + confidence;
     }
 
